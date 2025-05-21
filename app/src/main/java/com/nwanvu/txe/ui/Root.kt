@@ -19,7 +19,7 @@ object ListDestination
 data class DetailDestination(val username: String)
 
 @Composable
-fun App() {
+fun Root() {
     GithubUsersTheme {
         Surface {
             val navController: NavHostController = rememberNavController()

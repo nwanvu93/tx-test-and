@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Github Users</string>
     <string name="title_details">User Details</string>
-    <string name="no_data_available">No data available</string>
     <string name="btn_back">Back</string>
+    <string name="no_data_available">No data available</string>
+
+    <string name="err_common">Something went wrong</string>
+    <string name="err_connection">No internet connection</string>
 </resources>
