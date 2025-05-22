@@ -2,9 +2,9 @@ package com.nwanvu.txe.ui.screens.list
 
 import androidx.lifecycle.viewModelScope
 import com.nwanvu.txe.data.model.User
-import com.nwanvu.txe.data.network.Failure
 import com.nwanvu.txe.domain.interactor.GetUserListUseCase
 import com.nwanvu.txe.ui.common.BaseViewModel
+import com.nwanvu.txe.ui.common.UiState
 import com.nwanvu.txe.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,14 +15,8 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 /**
- * UiState for the user list screen.
+ * ViewModel for handling user list screen.
  */
-data class UiState(
-    val items: List<User> = emptyList(),
-    val isLoading: Boolean = false,
-    val failure: Failure? = null
-)
-
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val getUserListUC: GetUserListUseCase,
@@ -38,27 +32,28 @@ class ListViewModel @Inject constructor(
 
     private val users: MutableStateFlow<List<User>> = MutableStateFlow(emptyList())
     private var currentPage: Int = START_PAGE
+    private var canLoadMore: Boolean = false
 
-    val uiState: StateFlow<UiState> = combine(
+    val uiState: StateFlow<UiState<List<User>>> = combine(
         users, isLoading, failure
     ) { users, isLoading, failure ->
         when {
             isLoading -> {
-                UiState(isLoading = true)
+                UiState(data = emptyList(), isLoading = true)
             }
 
             failure != null -> {
-                UiState(failure = failure)
+                UiState(data = emptyList(), failure = failure)
             }
 
             else -> {
-                UiState(items = users)
+                UiState(data = users, canLoadMore = canLoadMore)
             }
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = UiState(isLoading = true)
+        initialValue = UiState(data = emptyList(), isLoading = true)
     )
 
     private fun fetchUsers() {
@@ -82,6 +77,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun handleSuccess(users: List<User>) {
+        canLoadMore = users.size == Constants.API_PAGE_SIZE
         if (currentPage == START_PAGE) {
             this.users.value = users
         } else {

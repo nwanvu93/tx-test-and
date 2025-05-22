@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +43,7 @@ import com.nwanvu.txe.data.model.User
 import com.nwanvu.txe.ui.views.AppBar
 import com.nwanvu.txe.ui.views.EmptyView
 import com.nwanvu.txe.ui.views.LoadingView
+import com.nwanvu.txe.ui.views.UserView
 import com.nwanvu.txe.utils.LoadMoreListHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +65,7 @@ fun UserListScreen(
                 if (loading) {
                     LoadingView(Modifier.fillMaxSize())
                 } else {
-                    if (uiState.failure != null || uiState.items.isEmpty()) {
+                    if (uiState.failure != null || uiState.data.isEmpty()) {
                         EmptyView(Modifier.fillMaxSize())
                     } else {
                         val listState = rememberLazyListState()
@@ -80,11 +82,18 @@ fun UserListScreen(
                                 bottom = innerPadding.calculateBottomPadding() + 16.dp
                             ),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
-
-                            ) {
-                            val list = uiState.items
+                        ) {
+                            val list = uiState.data
                             items(count = list.size) {
                                 UserView(list[it], onClick = navigateToDetails)
+                                if (it == list.size - 1 && uiState.canLoadMore) {
+                                    LoadingView(
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .requiredHeight(32.dp)
+                                            .fillMaxWidth()
+                                    )
+                                }
                             }
                         }
 
@@ -93,47 +102,6 @@ fun UserListScreen(
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun UserView(user: User, onClick: (username: String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .requiredHeight(150.dp)
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        onClick = { onClick(user.username ?: return@Card) }) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = user.avatar,
-                contentDescription = user.username,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .requiredWidth(100.dp)
-                    .aspectRatio(1f)
-                    .background(Color.LightGray),
-            )
-            Column(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(text = user.username.toString(), style = MaterialTheme.typography.titleLarge)
-                HorizontalDivider()
-                Text(text = user.profileUrl.toString())
             }
         }
     }
