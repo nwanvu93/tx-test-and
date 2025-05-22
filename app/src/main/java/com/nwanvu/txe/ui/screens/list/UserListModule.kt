@@ -1,23 +1,20 @@
 package com.nwanvu.txe.ui.screens.list
 
 import androidx.lifecycle.ViewModel
-import com.nwanvu.txe.data.repository.UsersDataRepository
-import com.nwanvu.txe.domain.repository.UsersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewComponent::class)
 class UserListModule {
-    @Provides
-    fun provideUsersRepository(repository: UsersDataRepository): UsersRepository {
-        return repository
-    }
 
+    /**
+     * Provides the [UserListViewModel] instance.
+     */
     @Provides
-    fun provideListViewModel(viewModel: ListViewModel): ViewModel {
+    fun provideListViewModel(viewModel: UserListViewModel): ViewModel {
         return viewModel
     }
 }

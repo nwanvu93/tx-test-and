@@ -23,6 +23,9 @@ class UserDetailsViewModel @Inject constructor(
 
     private val user: MutableStateFlow<User?> = MutableStateFlow(null)
 
+    /**
+     * UI state exposed to the UI.
+     */
     val uiState: StateFlow<UiState<out User?>> = combine(
         user, isLoading, failure
     ) { user, isLoading, failure ->
@@ -45,6 +48,11 @@ class UserDetailsViewModel @Inject constructor(
         initialValue = UiState(data = null, isLoading = true)
     )
 
+    /**
+     * Executes the GetUserDetailUseCase to fetch user details from the API.
+     *
+     * @param username Username of the user to fetch details for.
+     */
     fun fetchDetails(username: String) {
         isLoading.value = true
         getUserDetailUC(GetUserDetailUseCase.Params(username), viewModelScope) {
@@ -53,6 +61,11 @@ class UserDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Handles a successful user details response by updating the user details.
+     *
+     * @param user User details returned from the API.
+     */
     private fun handleSuccess(user: User) {
         this.user.value = user
     }

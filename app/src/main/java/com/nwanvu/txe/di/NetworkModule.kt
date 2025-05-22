@@ -17,6 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * This module is installed in the [SingletonComponent], ensuring that the provided instances are singletons
+ * and shared across the application.
+ *
+ * @property baseUrl The base URL used by Retrofit for API requests.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {

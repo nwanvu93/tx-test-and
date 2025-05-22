@@ -1,5 +1,8 @@
 package com.nwanvu.txe.domain.entity
 
+/**
+ * Base Class for handling responses from API calls.
+ */
 class ResponseEntity<T>(
     val error: String?,
     val data: T?,

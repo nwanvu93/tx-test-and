@@ -5,6 +5,8 @@
     <string name="no_data_available">No data available</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="bio">Bio</string>
+    <string name="blog">Blog</string>
 
     <string name="err_common">Something went wrong</string>
     <string name="err_connection">No internet connection</string>

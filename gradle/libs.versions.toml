@@ -1,7 +1,7 @@
 [versions]
 agp = "8.10.0"
 kotlin = "2.1.21"
-kotlinxCoroutines = "1.10.1"
+kotlinxCoroutines = "1.10.2"
 coreKtx = "1.16.0"
 coil = "3.2.0"
 junit = "4.13.2"
@@ -9,13 +9,15 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.05.00"
+composeBom = "2025.05.01"
 retrofit = "3.0.0"
 okhttpBom = "4.12.0"
 hilt = '2.56.2'
 hiltNavigationCompose = "1.2.0"
 ksp = '2.1.21-2.0.1'
 navigationCompose = "2.9.0"
+mockito = "5.17.0"
+mockitoKOtlin = "5.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,10 +44,14 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpBom" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKOtlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

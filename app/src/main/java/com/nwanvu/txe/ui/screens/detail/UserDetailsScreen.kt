@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
@@ -37,11 +35,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nwanvu.txe.R
 import com.nwanvu.txe.data.model.User
+import com.nwanvu.txe.ui.screens.list.UserListViewModel
 import com.nwanvu.txe.ui.views.AppBar
 import com.nwanvu.txe.ui.views.EmptyView
 import com.nwanvu.txe.ui.views.LoadingView
 import com.nwanvu.txe.ui.views.UserView
 
+/**
+ * Composable function for displaying the user details screen.
+ *
+ * @param username Username of the user to display details for
+ * @param viewModel [UserDetailsViewModel] has initialized by Hilt
+ * @param navigateBack Callback function to navigate back to the previous screen
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserDetailsScreen(
@@ -71,6 +77,7 @@ fun UserDetailsScreen(
                 ),
             )
         ) { loading ->
+            // return views based on the UI state
             if (loading) {
                 LoadingView(Modifier.fillMaxSize())
             } else {
@@ -108,11 +115,11 @@ private fun ContentView(data: User) {
         }
 
         Spacer(modifier = Modifier.requiredHeight(20.dp))
-        Text(text = "Bio")
+        Text(text = stringResource(R.string.bio))
         Text(text = data.bio ?: "")
 
         Spacer(modifier = Modifier.requiredHeight(20.dp))
-        Text(text = "Blog")
+        Text(text = stringResource(R.string.blog))
         Text(text = data.blog ?: "")
     }
 }

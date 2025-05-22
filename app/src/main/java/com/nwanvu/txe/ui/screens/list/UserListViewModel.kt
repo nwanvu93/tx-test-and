@@ -18,7 +18,7 @@ import javax.inject.Inject
  * ViewModel for handling user list screen.
  */
 @HiltViewModel
-class ListViewModel @Inject constructor(
+class UserListViewModel @Inject constructor(
     private val getUserListUC: GetUserListUseCase,
 ) : BaseViewModel() {
 
@@ -26,6 +26,9 @@ class ListViewModel @Inject constructor(
         private const val START_PAGE = 0
     }
 
+    /**
+     * Fetch users on initialization.
+     */
     init {
         fetchUsers()
     }
@@ -34,6 +37,9 @@ class ListViewModel @Inject constructor(
     private var currentPage: Int = START_PAGE
     private var canLoadMore: Boolean = false
 
+    /**
+     * UI state exposed to the UI.
+     */
     val uiState: StateFlow<UiState<List<User>>> = combine(
         users, isLoading, failure
     ) { users, isLoading, failure ->
@@ -56,6 +62,11 @@ class ListViewModel @Inject constructor(
         initialValue = UiState(data = emptyList(), isLoading = true)
     )
 
+    /**
+     * Executes the GetUserListUseCase to fetch users from the API.
+     *
+     * Calculates the next 'since' parameter based on the current page and page size.
+     */
     private fun fetchUsers() {
         isLoading.value = currentPage == START_PAGE
         val nextSince = currentPage * Constants.API_PAGE_SIZE
@@ -66,16 +77,27 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Refreshes the user list by resetting the current page to the [START_PAGE]
+     */
     fun refresh() {
         currentPage = START_PAGE
         fetchUsers()
     }
 
+    /**
+     * Loads the next page of users by incrementing the current page
+     */
     fun loadMore() {
         currentPage++
         fetchUsers()
     }
 
+    /**
+     * Handles a successful user list response by updating the users list
+     *
+     * @param users List of users returned from the API.
+     */
     private fun handleSuccess(users: List<User>) {
         canLoadMore = users.size == Constants.API_PAGE_SIZE
         if (currentPage == START_PAGE) {

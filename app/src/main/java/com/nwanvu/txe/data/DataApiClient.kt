@@ -12,10 +12,13 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
+/**
+ * Implementation of [ApiClient] for handling API calls
+ */
 class DataApiClient @Inject constructor() : ApiClient {
 
     /**
-     * execute api call and return [Either]
+     * Execute api call and return [Either]
      */
     override fun <T, R> request(
         call: Call<T>, transform: (T) -> R, default: T
@@ -36,7 +39,7 @@ class DataApiClient @Inject constructor() : ApiClient {
     }
 
     /**
-     * mapping response body from [T] tp [Either]
+     * Mapping response body from [T] to [Either]
      */
     private fun <T, R> handleResponseSuccess(
         body: T?, transform: (T) -> R, default: T
@@ -53,7 +56,7 @@ class DataApiClient @Inject constructor() : ApiClient {
     }
 
     /**
-     * handle response error and return [Left<Failure>]
+     * Handle response error and return [Failure]
      */
     private fun handleResponseError(response: Response<*>): Left<Failure> {
         return Failure.ServerError.toLeft()
